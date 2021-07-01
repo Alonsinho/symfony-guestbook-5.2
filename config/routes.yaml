@@ -1,3 +1,23 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+
+homepage:
+    path: /
+    controller: App\Controller\ConferenceController::index
+
+conference:
+    path: /conference/{slug}
+    controller: App\Controller\ConferenceController::show
+    
+admin:
+    path: /admin
+    controller: App\Controller\Admin\DashboardController::index
+
+app_login:
+    path: /login
+    controller: App\Controller\SecurityController::login
+
+app_logout:
+    path: /logout
+    controller: App\Controller\SecurityController::logout

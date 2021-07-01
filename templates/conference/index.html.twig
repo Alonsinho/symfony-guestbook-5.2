@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Conference Guestbook{% endblock %}
+
+{% block body %}
+    <h2 class="example-wrapper">Give your feedback!</h2>
+
+    {% for conference in conferences %}
+        <div>
+            {{ conference }}
+            <a href="{{ path('conference', { slug: conference.slug }) }}">View</a>
+        </div>
+        <br>
+    {% endfor %}
+{% endblock %}
