@@ -131,7 +131,7 @@ class Conference
 
     public function __toString(): string
     {
-        return $this->city.', '.$this->year;
+        return $this->city.' '.$this->year;
     }
 
     public function getSlug(): ?string
