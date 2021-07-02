@@ -40,6 +40,7 @@ class CommentCrudController extends AbstractCrudController
             DateTimeField::new('created_at')
                 ->setRequired(true)
                 ->renderAsChoice(),
+            TextField::new('state'),
         ];
     }
 }

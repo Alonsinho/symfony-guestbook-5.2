@@ -4,6 +4,12 @@ This README would normally document whatever steps are necessary to get the
 application up and running.
 
 Tests commands:
+* symfony console --env=test doctrine:fixtures:load -n --group=TestFixtures
+* symfony php bin/phpunit
 
-symfony console --env=test doctrine:fixtures:load -n --group=TestFixtures
-symfony php bin/phpunit
+Run Messenger server:
+* symfony run -d --watch=config,src,templates,vendor symfony console messenger:consume async
+
+RabbitMQ Server:
+* rabbitmq-server.bat -detached to start
+* rabbitmqctl stop to stop

@@ -38,19 +38,20 @@ class TestFixtures extends Fixture
             ->setIsInternational(true);
         $manager->persist($arucas);
 
-        $comment = new Comment();
-        $comment->setConference($teror)
+        $commentJuan = new Comment();
+        $commentJuan->setConference($teror)
             ->setAuthor('Juan Test')
             ->setEmail('juantest@gmail.com')
-            ->setText('Amazing test bro');
-        $manager->persist($comment);
+            ->setText('Amazing test bro')
+            ->setState('published');
+        $manager->persist($commentJuan);
 
-        $comment = new Comment();
-        $comment->setConference($arucas)
+        $commentPedro = new Comment();
+        $commentPedro->setConference($arucas)
             ->setAuthor('Pedro Test')
             ->setEmail('pedrotest@gmail.com')
             ->setText('So nice test bro');
-        $manager->persist($comment);
+        $manager->persist($commentPedro);
 
         $manager->flush();
     }
