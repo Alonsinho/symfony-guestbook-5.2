@@ -29,9 +29,14 @@ class ConferenceController extends AbstractController
         $this->bus = $bus;
     }
 
-    public function index(): Response
+    public function index(ConferenceRepository $conferenceRepository): Response
     {
-        return new Response($this->twig->render('conference/index.html.twig'));
+        return $this->createConferencesResponse($conferenceRepository, 'conference/index.html.twig');
+    }
+
+    public function conferenceHeader(ConferenceRepository $conferenceRepository): Response
+    {
+        return $this->createConferencesResponse($conferenceRepository, 'conference/header.html.twig');
     }
 
     public function show(Request $request, Conference $conference, CommentRepository $commentRepository, string $photoDir)
@@ -78,5 +83,14 @@ class ConferenceController extends AbstractController
             'next' => min(count($paginator), $offset + CommentRepository::PAGINATOR_PER_PAGE),
             'commentForm' => $form->createView()
         ]));
+    }
+
+    protected function createConferencesResponse(ConferenceRepository $conferenceRepository, string $templatePath): Response
+    {
+        $response = new Response($this->twig->render($templatePath, [
+            'conferences' => $conferenceRepository->findAll(),
+        ]));
+        $response->setSharedMaxAge(3600);
+        return $response;
     }
 }

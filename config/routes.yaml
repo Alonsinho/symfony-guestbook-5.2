@@ -9,7 +9,11 @@ homepage:
 conference:
     path: /conference/{slug}
     controller: App\Controller\ConferenceController::show
-    
+
+conference_header:
+    path: /conference_header
+    controller: App\Controller\ConferenceController::conferenceHeader
+
 admin:
     path: /admin
     controller: App\Controller\Admin\DashboardController::index
@@ -21,3 +25,7 @@ app_login:
 app_logout:
     path: /logout
     controller: App\Controller\SecurityController::logout
+
+review_comment:
+    path: /admin/comment/review/{id}
+    controller: App\Controller\AdminController::reviewComment
