@@ -2,6 +2,7 @@
 
 namespace App\MessageHandler;
 
+use App\ImageOptimizer;
 use App\Message\CommentMessage;
 use App\Repository\CommentRepository;
 use App\SpamChecker;
@@ -21,12 +22,14 @@ final class CommentMessageHandler implements MessageHandlerInterface
     private $bus;
     private $workflow;
     private $mailer;
+    private $imageOptimizer;
     private $adminEmail;
+    private $photoDir;
     private $logger;
 
     public function __construct(SpamChecker $spamChecker, EntityManagerInterface $entityManager, CommentRepository $commentRepository,
-                                MessageBusInterface $bus, WorkflowInterface $workflow, MailerInterface $mailer, string $adminEmail,
-                                LoggerInterface $logger)
+                                MessageBusInterface $bus, WorkflowInterface $workflow, MailerInterface $mailer, ImageOptimizer $imageOptimizer,
+                                string $photoDir, string $adminEmail, LoggerInterface $logger)
     {
         $this->spamChecker = $spamChecker;
         $this->entityManager = $entityManager;
@@ -34,7 +37,9 @@ final class CommentMessageHandler implements MessageHandlerInterface
         $this->bus = $bus;
         $this->workflow = $workflow;
         $this->mailer = $mailer;
+        $this->imageOptimizer = $imageOptimizer;
         $this->adminEmail = $adminEmail;
+        $this->photoDir = $photoDir;
         $this->logger = $logger;
     }
 
@@ -71,6 +76,13 @@ final class CommentMessageHandler implements MessageHandlerInterface
                     ->to($this->adminEmail)
                     ->context(['comment' => $comment])
             );
+
+        } elseif ($this->workflow->can($comment, 'optimize')) {
+            if ($comment->getPhotoFilename()) {
+                $this->imageOptimizer->resize($this->photoDir.'/'.$comment->getPhotoFilename());
+            }
+            $this->workflow->apply($comment, 'optimize');
+            $this->entityManager->flush();
 
         } elseif ($this->logger) {
             $this->logger->debug('Dropping comment message', [
