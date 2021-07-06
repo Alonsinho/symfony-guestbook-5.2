@@ -20,6 +20,7 @@ services:
             $photoDir: "%kernel.project_dir%/public/uploads/photos"
             $akismetKey: "%env(AKISMET_KEY)%"
             $adminEmail: "%env(string:default:default_admin_email:ADMIN_EMAIL)%"
+            $daysBeforeRejectedRemoval: 7
     Symfony\Component\Workflow\WorkflowInterface: '@state_machine.comment'
 
     # makes classes in src/ available to be used as services
