@@ -5,7 +5,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     default_admin_email: admin@example.com
-    default_domain: '127.0.0.1:8074/my-guestbook-52/public'
+    default_domain: 'localhost:8074/my-guestbook-52/public'
     default_scheme: 'http'
 
     router.request_context.host: '%env(default:default_domain:SYMFONY_DEFAULT_ROUTE_HOST)%'

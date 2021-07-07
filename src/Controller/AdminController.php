@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Workflow\Registry;
 use Twig\Environment;
 
@@ -43,7 +44,9 @@ class AdminController extends AbstractController
         $this->entityManager->flush();
 
         if ($accepted) {
-            $this->bus->dispatch(new CommentMessage($comment->getId()));
+            // Creates a message in queue to optimize the photo (both the photo exists or not) and publish the comment
+            $reviewUrl = $this->generateUrl('review_comment', ['id' => $comment->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
+            $this->bus->dispatch(new CommentMessage($comment->getId(), $reviewUrl));
         }
 
         return $this->render('admin/review.html.twig', [
