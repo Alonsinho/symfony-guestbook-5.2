@@ -32,6 +32,11 @@ class ConferenceController extends AbstractController
         $this->bus = $bus;
     }
 
+    public function indexNoLocale()
+    {
+        return $this->redirectToRoute('homepage', ['_locale' => 'en']);
+    }
+
     public function index(ConferenceRepository $conferenceRepository): Response
     {
         return $this->createConferencesResponse($conferenceRepository, 'conference/index.html.twig');

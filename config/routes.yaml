@@ -1,17 +1,17 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+index:
+    path: /
+    controller: App\Controller\ConferenceController::indexNoLocale
 
 homepage:
-    path: /
+    path: /{_locale<%app.supported_locales%>}/
     controller: App\Controller\ConferenceController::index
 
 conference:
-    path: /conference/{slug}
+    path: /{_locale<%app.supported_locales%>}/conference/{slug}
     controller: App\Controller\ConferenceController::show
 
 conference_header:
-    path: /conference_header
+    path: /{_locale<%app.supported_locales%>}/conference_header
     controller: App\Controller\ConferenceController::conferenceHeader
 
 admin:

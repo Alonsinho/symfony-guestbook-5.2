@@ -14,21 +14,22 @@ class ConferenceControllerTest extends WebTestCase
     {
         $client = static::createClient();
         #$client = static::createPantherClient(['external_base_uri' => $_SERVER['SYMFONY_DEFAULT_ROUTE_URL']]);
-        $client->request('GET', '/');
+        $client->request('GET', '/en/');
 
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('h2', 'Give your feedback!');
     }
     
+    // Hay que iniciar primero el servicio Messenger y RabbitMQ
     public function testCommentSubmission()
     {
         $client = static::createClient();
         #$client = static::createPantherClient(['external_base_uri' => $_SERVER['SYMFONY_DEFAULT_ROUTE_URL']]);
-        $client->request('GET', '/conference/terortest2022');
+        $client->request('GET', '/en/conference/terortest2022');
         $client->submitForm('Submit', [
             'comment_form[author]' => 'Luis Enrique',
             'comment_form[text]' => 'Test comment',
-            'comment_form[email]' => $email = 'me@automat.ed',
+            'comment_form[email]' => $email = 'me@test.com',
             'comment_form[photo]' => dirname(__DIR__, 1).'/public/uploads/photos/testphoto.jpg',
         ]);
         $this->assertResponseRedirects();
@@ -46,7 +47,7 @@ class ConferenceControllerTest extends WebTestCase
     {
         $client = static::createClient();
         #$client = static::createPantherClient(['external_base_uri' => $_SERVER['SYMFONY_DEFAULT_ROUTE_URL']]);
-        $crawler = $client->request('GET', '/');
+        $crawler = $client->request('GET', '/en/');
 
         $this->assertCount(2, $crawler->filter('h4'));
 
@@ -55,6 +56,5 @@ class ConferenceControllerTest extends WebTestCase
         $this->assertPageTitleContains('Arucas Test');
         $this->assertResponseIsSuccessful();
         $this->assertSelectorExists('h2', 'Arucas Test 2017');
-        $this->assertSame('There are 1 comments.', $crawler->filter('div')->text());
     }
 }
